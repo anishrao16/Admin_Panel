@@ -53,6 +53,27 @@
                             <?php echo form_error('mobilenumber',"<div style='color:red'> "," </div>"); ?>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <div class="form-row">
+
+                            <div class="col-md-6">
+                                <div class="form-label-group">
+                                    <?php echo form_input(['name'=>'password','id'=>'password','class'=>'form-control','autofocus'=>'autofocus','value'=>set_value('password')]); ?>
+                                    <?php echo form_label('Password', 'password'); ?>
+                                    <?php echo form_error('password',"<div style='color:red'> "," </div>"); ?>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-label-group">
+                                    <?php echo form_input(['name'=>'confirmpassword','id'=>'confirmpassword','class'=>'form-control','autofocus'=>'autofocus','value'=>set_value('confirmpassword')]); ?>
+                                    <?php echo form_label('Confirm Password', 'confirmpassword'); ?>
+                                    <?php echo form_error('confirmpassword',"<div style='color:red'> "," </div>"); ?>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
