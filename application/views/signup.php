@@ -12,10 +12,15 @@
             <div class="card card-register mx-auto mt-5">
                 <div class="card-header"> Register an Account </div>
                 <div class="card-body">
+
                     <?php if($this->session->flashdata('success')) { ?>
                         <p style="color: green; font-size: 18px;"> <?php echo $this->session->flashdata('success'); ?> </p>
                     <!--- </div> --->
                     <?php } ?>
+
+                    <?php if ($this->session->flashdata('error')) { ?>
+                        <p style="color:red; font-size:18px;"><?php echo $this->session->flashdata('error');?></p>
+                    <?php } ?> 
                 
                     <?php echo form_open('user/signup'); ?>
                         <div class="form-group">
@@ -72,8 +77,12 @@
                                     <?php echo form_error('confirmpassword',"<div style='color:red'> "," </div>"); ?>
                                 </div>
                             </div>
+
                         </div>
                     </div>
+
+                    <?php echo form_submit(['name'=>'Register','value'=>'Register','class'=>'btn btn-primary btn-block']); ?>
+
                 </div>
             </div>
         </div>
