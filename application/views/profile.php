@@ -143,8 +143,37 @@ $role = $userInfo->role;
                             <?php echo $this->session->flashdata('error'); ?>
                         </div>
                 <?php    } ?>
+                <?php
+                    $success = $this->session->flashdata('success');
+                    if($success)
+                    {
+                        ?>
+                        <div class="alert alert-success alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"> X </button>
+                            <?php echo $this->session->flashdata('success'); ?>
+                        </div>
+                <?php } ?>
+
+                <?php 
+                    $noMatch = $this->session->flashdata('nomatch');
+                    if($noMatch)
+                    {
+                        ?>
+                        <div class="alert alert-warning alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"> X </button>
+                            <?php echo $this->session->flashdata('nomatch'); ?>
+                        </div>
+                <?php } ?>
+
+                <div class="row">
+                     class="col-md-12">
+                        <?php echo validation_errors('<div class="alert alert-danger alert-dismissable">', '<button type="button" class="close" data-dismiss="alert" aria-hidden="true"> X </button></div>'); ?>
+                    </div>
+                </div>
             </div>
 
         </div>
     </section>
 </div>
+
+<script src="<?php echo base_url(); ?>assets/js/editUser.js" type="text/javascript"></script>
