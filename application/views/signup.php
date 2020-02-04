@@ -15,7 +15,7 @@
 
                     <?php if($this->session->flashdata('success')) { ?>
                         <p style="color: green; font-size: 18px;"> <?php echo $this->session->flashdata('success'); ?> </p>
-                    <!--- </div> --->
+                     </div>
                     <?php } ?>
 
                     <?php if ($this->session->flashdata('error')) { ?>
@@ -82,9 +82,19 @@
                     </div>
 
                     <?php echo form_submit(['name'=>'Register','value'=>'Register','class'=>'btn btn-primary btn-block']); ?>
+                </form>
+   
+                <div class="text-center">
+                    <a class="d-block small mt-3" href="<?php echo site_url('user/Login'); ?>"> Login </a>
+                </div>
 
                 </div>
             </div>
         </div>
+
+        <script src="<?php echo base_url('assets/vendor/jquery/jquery.min.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/vendor/bootstrap/js/bootstrap.bundle.min.js'); ?>"></script>
+        <script src="<?php echo base_url('assets/vendor/jquery-easing/jquery.easing.min.js'); ?>"></script>
+
     </body>
 </html>
