@@ -86,9 +86,65 @@ $role = $userInfo->role;
                                 </div>
                             </form>
                         </div>
+
+                        <div class="<?= ($active == "changepass")? "active" : ""  ?> tab-pane" id="changepass">
+                            <form role="form" action="<?php echo base_url() ?>changePassword" method="post">
+                                <div class="box-body">
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="inputPassword1"> Old Password </label>
+                                                <input type="password" class="form-control" id="inputOldPassword" placeholder="Old Password" name="oldPassword" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="inputPassword1"> New Password </label>
+                                                <input type="password" class="form-control" id="inputPassword1" placeholder="New Password" name="newPassword" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label for="inputPassword2"> Confirm New Password </label>
+                                                <input type="password" class="form-control" id="inputPassword2" placeholder="Confirm New Password" name="cNewPassword" required>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="box-footer">
+                                    <input type="submit" class="btn btn-primary" value="Submit" />
+                                    <input type="reset" class="btn-default" value="Reset" />
+                                </div>
+
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-4">
+                <?php
+                    $this->load->helper('form');
+                    $error = $this->session->flashdata('error');
+                    if($error)
+                    {
+                        ?>
+                        <div class="alert alert-danger alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"> X </button>
+                            <?php echo $this->session->flashdata('error'); ?>
+                        </div>
+                <?php    } ?>
+            </div>
+
         </div>
     </section>
 </div>
