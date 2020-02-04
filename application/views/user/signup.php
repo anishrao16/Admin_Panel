@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+    
     <head>
         <title> Sign Up </title>
         <?php echo link_tag('assets/vendor/bootstrap/css/bootstrap.min.css'); ?>
@@ -82,11 +83,11 @@
                     </div>
 
                     <?php echo form_submit(['name'=>'Register','value'=>'Register','class'=>'btn btn-primary btn-block']); ?>
-                </form>
+                    </form>
    
-                <div class="text-center">
-                    <a class="d-block small mt-3" href="<?php echo site_url('user/Login'); ?>"> Login </a>
-                </div>
+                    <div class="text-center">
+                        <a class="d-block small mt-3" href="<?php echo site_url('user/Login'); ?>"> Login </a>
+                    </div>
 
                 </div>
             </div>
