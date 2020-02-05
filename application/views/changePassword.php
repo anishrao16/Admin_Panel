@@ -39,10 +39,17 @@
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label for="inputPassword2"> Confirm New Password </label>
+                                        <input type="password" class="form-control" id="inputPassword2" name="cNewPassword" placeholder="Confirm New Password" required>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <div class="box-footer">
+                            <input type="submit" class="btn btn-primary" value="Submit" />
+                            <input type="reset" class="btn btn-default" value="Reset" />
+                        </div>
+                        
                     </form>
                 </div>
             </div>
