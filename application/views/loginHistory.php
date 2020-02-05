@@ -77,8 +77,25 @@
                             }?>
                         </table>
                     </div>
+
+                    <div class="box-footer clearfix">
+                        <?php echo $this->pagination->create_links(); ?>
+                    </div>
+
                 </div>
             </div>
         </div>
     </section>
 </div>
+
+<script src="<?php echo base_url(); ?>assets/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+<script type="text/javascript">
+    jQuery(document).ready(function(){
+        jQuery('ul.pagination li a').click(function (e){
+            e.preventDefault();
+            var link = jQuery(this).get(0).href;
+            jQuery("#searchList").attr("action", link);
+            jQuery("#searchList").submit();
+        });
+    });
+</script>
