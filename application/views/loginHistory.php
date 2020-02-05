@@ -66,12 +66,13 @@
                                     ?>
                                     <tr>
                                         <td> <?php echo $record->sessionData ?> </td>
-                                        <td> <?php echo $record->sessionData ?> </td>
-                                        <td> <?php echo $record->sessionData ?> </td>
-                                        <td> <?php echo $record->sessionData ?> </td>
-                                        <td> <?php echo $record->sessionData ?> </td>
-                                        <td> <?php echo $record->sessionData ?> </td>
+                                        <td> <?php echo $record->machineIp ?> </td>
+                                        <td> <?php echo $record->userAgent ?> </td>
+                                        <td> <?php echo $record->agentString ?> </td>
+                                        <td> <?php echo $record->platform ?> </td>
+                                        <td> <?php echo $record->createdDtm ?> </td>
                                     </tr>
+                                    <?php
                                 }
                             }?>
                         </table>
