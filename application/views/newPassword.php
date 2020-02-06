@@ -37,3 +37,32 @@
                             <button type="button" class="close" data-dismiss="alert" aria-hidden="true"> X </button>
                             <?php echo $this->session->flashdata('error'); ?>
                         </div>
+                <?php } ?>
+
+                <form action="<?php echo base_url(); ?>createPasswordUser" method="POST">
+                    <div class="form-group has-feedback">
+                        <input type="email" class="form-control" placeholder="Email" name="email" value="<?php echo $email; ?>" readonly required />
+                        <span class="glyphicon glyphicon-envelop form-control-feedback"></span>
+                        <input type="hidden" name="activation_code" value="<?php echo $activation_code; ?>" required />
+                    </div>
+                    <hr>
+
+                    <div class="form-group has-feedback">
+                        <input type="password" class="form-control" placeholder="Password" name="password" required />
+                        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xs-4">
+                            <input type="submit" class="btn btn-primary btn-block btn-flat" value="Submit" />
+                        </div>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+
+        <script src="<?php echo base_url(); ?>assets/bower_components/jquery/dist/jquery.min.js" />
+        <script src="<?php echo base_url(); ?>assets/bower_components/bootstrap/dist/js/bootstrap.min.js" />
+    </body>
+</html>
