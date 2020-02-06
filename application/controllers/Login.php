@@ -175,4 +175,47 @@ class Login extends CI_Controller
             redirect('/login');
         }
     }
+
+    function createPasswordUser()
+    {
+        $status = '';
+        $message = '';
+        $email = strtolower($this->input->post("email"));
+        $activation_id = $this->input->post("activation_code");
+
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_rules('password','Password','required');
+        $this->form_validation->set_rules('cpassword','Confirm Password','trim|required|matches[password]');
+
+        if($this->form_validation->run() == FALSE)
+        {
+            $this->resetPasswordConfirmUser($activation_id, urlencode($email));
+        }
+        else
+        {
+            $password = $this->input->post('password');
+            $cpassword = $this->input->post('cpassword');
+
+            $is_correct = $this->login_model->checkActivationDeatils($email, $activation_id);
+
+            if($is_correct == 1)
+            {
+                $this->login_model->createPasswordUser($email, $password);
+
+                $status = 'success';
+                $message = 'Password reset successfully';
+            }
+            else
+            {
+                $status = 'error';
+                $message = 'Password reset failed';
+            }
+
+            setFlashData($status, $message);
+
+            redirect("/login");
+        }
+    }
 }
+?>
