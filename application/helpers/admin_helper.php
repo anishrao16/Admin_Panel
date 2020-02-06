@@ -53,5 +53,28 @@
         }
     }
 
-    
+    if(!function_exists('setProtocol'))
+    {
+        function setProtocol()
+        {
+            $CI = &get_instance();
+
+            $CI->load->library('email');
+
+            $config['protocol'] = PROTOCOL;
+            $config['mailpath'] = MAIL_PATH;
+            $config['smtp_host'] = SMTP_HOST;
+            $config['smtp_port'] = SMTP_PORT;
+            $config['smtp_user'] = SMTP_USER;
+            $config['smtp_pass'] = SMTP_PASS;
+            $config['charset'] = "utf-8";
+            $config['mailtype'] = "html";
+            $config['newline'] = "\r\n";
+
+            $CI->email->initialize($config);
+
+            return $CI;
+        }
+    }
+
 ?>
