@@ -74,4 +74,105 @@ class Login extends CI_Controller
             }
         }
     }
+
+    public function forgotPassword()
+    {
+        $isLoggedIn = $this->session->userdata('isLoggedIn');
+
+        if(!isset($isLoggedIn) || $isLoggedIn !=TRUE)
+        {
+            $this->load->view('forgotPassword');
+        }
+        else
+        {
+            redirect('/dashboard');
+        }
+    }
+
+    function resetPasswordUser()
+    {
+        $status = '';
+
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_rules('login_email','Email','trim|required|valid_email');
+
+        if($this->form_validation->run() == FALSE)
+        {
+            $this->forgotPassword();
+        }
+        else
+        {
+            $email = strtolower($this->security->xss_clean($this->input->post('login_email')));
+
+            if($this->login_model->checkEmailExist($email))
+            {
+                $encoded_email = urlencode($email);
+
+                $this->load->helper('string');
+                $data['email'] = $email;
+                $data['activation_id'] = random_string('alnum',15);
+                $data['createdDtm'] = date('Y-m-d H:i:s');
+                $data['agent'] = getBrowserAgent();
+                $data['client_ip'] = $this->input->ip_address();
+
+                $save = $this->login_model->resetPasswordUser($data);
+
+                if($save)
+                {
+                    $data1['reset_link'] = base_url() . "resetPasswordConfirmUser/" . $data['activation_id'] . "/" . $encoded_email;
+                    $userInfo = $this->login_model->getCustomerInfoByEmail($email);
+
+                    if(!empty($userInfo)){
+                        $data1["name"] = $userInfo->name;
+                        $data1["email"] = $userInfo->email;
+                        $data1["message"] = "Reset Your Password";
+                    }
+
+                    $sendStatus = resetPasswordEmail($data1);
+
+                    if($sendStatus)
+                    {
+                        $status = "send";
+                        setFlashData($status, "Reset password link send successfully");
+                    }
+                    else
+                    {
+                        $status = 'notsend';
+                        setFlashData($status, "Email has been failed, try again");
+                    }
+                }
+                else
+                {
+                    $status = 'unable';
+                    setFlashData($status, "It seems an error while sending your details, try again.");
+                }
+            }
+            else
+            {
+                $status = 'invalid';
+                setFlashData($status, "This email is not registered with us.");
+            }
+            redirect('/forgotPassword');
+        }
+    }
+
+    function resetPasswordConfirmUser($activation_id, $email)
+    {
+        $email = urldecode($email);
+
+        $is_correct = $this->login_model->checkActivationDetails($email, $activation_id);
+
+        $data['email'] = $email;
+        $data['activation_code'] = $activation_id;
+
+        if($is_correct == 1)
+        {
+            $this->load->view('newPassword', $data);
+        }
+        else
+        {
+            redirect('/login');
+        }
+    }
 }
