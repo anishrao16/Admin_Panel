@@ -78,6 +78,24 @@
                             <?php echo $this->session->flashdata('success'); ?>
                         </div>
                 <?php } ?>
+
+                <?php
+                    $noMatch = $this->session->flashdata('nomatch');
+
+                    if($noMatch)
+                    {
+                        ?>
+                        <div class="alert alert-warning alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"> X </button>
+                            <?php echo $this->session->flashdata('nomatch'); ?>
+                        </div>
+                <?php } ?>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <?php echo validation_errors('<div class="alert alert-danger alert-dismissable">', '<button type="button" class="close" data-dismiss="alert" aria-hidden="true"> X </button> </div>'); ?>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
