@@ -111,4 +111,13 @@
         }
     }
 
+    if(!function_exists('setFlashData'))
+    {
+        function setFlashData($status, $flashMsg)
+        {
+            $CI = get_instance();
+            $CI->session->set_flashdata($status, $flashMsg);
+        }
+    }
+
 ?>
