@@ -15,3 +15,25 @@
             <div class="login-logo">
                 <a href="#"> <b> Admin Panel </b> </a>
             </div>
+
+            <div class="login-box-body">
+                <p class="login-box-msg"> Reset Password </p>
+                <?php $this->load->helper('form'); ?>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <?php echo validation_errors('<div class="alert alert-danger alert-dismissable">', '<button type="button" class="close" data-dismiss="alert" aria-hidden="true"> X </button>  </div>'); ?>
+                    </div>
+                </div>
+
+                <?php 
+                    $this->load->helper('error');
+                    $error = $this->session->flashdata('error');
+
+                    if($error)
+                    {
+                        ?>
+                        <div class="alert alert-danger alert-dismissable">
+                            <button type="button" class="close" data-dismiss="alert" aria-hidden="true"> X </button>
+                            <?php echo $this->session->flashdata('error'); ?>
+                        </div>
