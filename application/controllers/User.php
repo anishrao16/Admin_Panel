@@ -167,12 +167,12 @@ class User extends BaseController
             
             $userId = $this->input->post('userId');
             
-            $this->form_validation->set_rules('fname','Full Name','trim|required|max_length[128]');
-            $this->form_validation->set_rules('email','Email','trim|required|valid_email|max_length[128]');
-            $this->form_validation->set_rules('password','Password','matches[cpassword]|max_length[20]');
-            $this->form_validation->set_rules('cpassword','Confirm Password','matches[password]|max_length[20]');
+            $this->form_validation->set_rules('fname','Full Name','trim|required');
+            $this->form_validation->set_rules('email','Email','trim|required|valid_email');
+            $this->form_validation->set_rules('password','Password','matches[cpassword]');
+            $this->form_validation->set_rules('cpassword','Confirm Password','matches[password]');
             $this->form_validation->set_rules('role','Role','trim|required|numeric');
-            $this->form_validation->set_rules('mobile','Mobile Number','required|min_length[10]');
+            $this->form_validation->set_rules('mobile','Mobile Number','required');
             
             if($this->form_validation->run() == FALSE)
             {
@@ -282,5 +282,86 @@ class User extends BaseController
         $this->global['pageTitle'] = $active == "details" ? 'My profile' : 'Change Password';
         $this->loadViews("profile", $this->global, $data, NULL);
     }
+
+    function profileUpdate($active = "details")
+    {
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_rules('fname','Full Name','trim|required');
+        $this->form_validation->set_rules('email','Email','trim|required|valid_email');
+        $this->form_validation->set_rules('mobile','Mobile Number','required');
+        
+        if($this->form_validation->run() == FALSE)
+        {
+            $this->profile($active);
+        }
+        else
+        {
+            $name = ucwords(strtolower($this->security->xss_clean($this->input->post('fname'))));
+            $email = strtolower($this->security->xss_clean($this->input->post('email')));
+            $mobile = $this->security->xss_clean($this->input->post('mobile'));
+
+            $userInfo = array('name'=>$name, 'email'=>$email, 'mobile'=>$mobile, 'updatedBy'=>$this->vendorId, 'updatedDtm'=>date('Y-m-d H:i:s'));
+                
+            $result = $this->user_model->editUser($userInfo, $this->vendorId);
+                
+            if($result == true)
+            {
+                $this->session->set_userdata('name', $name);
+                $this->session->set_userdata('Success', 'Profile updated successfully');
+            }
+            else
+            {
+                $this->session->set_flashdata('error', 'Profile updation failed');
+            }
+                
+            redirect('profile/'.$active);
+        }
+    }
+
+    function changePassword($active = "changepass")
+    {
+        $this->load->library('form_validation');
+
+        $this->form_validation->set_rules('oldPassword','Old Password','required');
+        $this->form_validation->set_rules('newPassword','New Password','required');
+        $this->form_validation->set_rules('cNewPassword','Confirm New Password','required|matches[newPassword]');
+        
+        if($this->form_validation->run() == FALSE)
+        {
+            $this->profile($active);
+        }
+        else
+        {
+            $oldPassword = $this->input->post('oldPassword');
+            $newPassword = $this->input->post('newPassword');
+                
+            $resultPas = $this->user_model->matchOldPassword($this->vendorId, $oldPassword);
+                
+            if(empty($result))
+            {
+                $this->session->set_flashdata('nomatch', 'Your old password is not correct');
+                redirect('profile/'.0$active);
+            }
+            else
+            {
+                $usersData = array('password'=>getHashedPassword($newPassword), 'updatedBy'=>$this->vendorId, 'updatedDtm'=>date('Y-m-d H:i:s'));
+                
+                $result = $this->user_model->changePassword($this->vendorId, $usersData);
+                
+                if($result > 0)
+                {
+                    $this->session->set_flashdata('success', 'Password updation successfully');
+                }
+                else
+                {
+                    $this->session->set_flashdata('error', 'Failed to update password');
+                }
+
+                redirect('profile'.$active);
+            }
+        }
+    }
+
 }
 ?>
