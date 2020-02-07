@@ -341,7 +341,7 @@ class User extends BaseController
             if(empty($result))
             {
                 $this->session->set_flashdata('nomatch', 'Your old password is not correct');
-                redirect('profile/'.0$active);
+                redirect('profile/'.$active);
             }
             else
             {
@@ -362,6 +362,32 @@ class User extends BaseController
             }
         }
     }
+    
+    function emailExists($email)
+    {
+        $userId = $this->vendorId;
+        $return = false;
 
+        if(empty($userId))
+        {
+            $result = $this->user_model->checkEmailExists($email);
+        }
+        else
+        {
+            $result = $this->user_model->checkEmailExists($email, $userId);
+        }
+
+        if(empty($result))
+        {
+            $return = true;
+        }
+        else
+        {
+            $this->form_validation->set_message('emailExists', 'The {field} is already exists');
+            $return = false;
+        }
+
+        return $return;
+    }
 }
 ?>
