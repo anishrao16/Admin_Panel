@@ -35,7 +35,7 @@
                         <?php echo $error; ?>
                     </div>
                 <?php }
-                    $success = $this-session-flashdata('success');
+                    $success = $this->session->flashdata('success');
                     if($success)
                     {
                         ?>
