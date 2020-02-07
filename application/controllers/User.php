@@ -215,4 +215,72 @@ class User extends BaseController
             }
         }
     }
+
+    function deleteUser()
+    {
+        if($this->isAdmin() == TRUE)
+        {
+            echo(json_encode(array('status'=>'access')));
+        }
+        else
+        {
+            $userId = $this->input->post('userId');
+            $userInfo = array('isDeleted'=>1, 'updatedBy'=>$this->vendorId, 'updatedDtm'=>date('Y-m-d H:i:s'));
+
+            $result = $this->user_model->deleteUser($userId, $userInfo);
+
+            if($result > 0)
+            {
+                echo(json_encode(array('status'=>TRUE)));
+            }
+            else
+            {
+                echo(json_encode(array('status'=>FALSE)));
+            }
+        }
+    }
+
+    function loginHistory($userId = NULL)
+    {
+        if($this->isAdmin() == TRUE)
+        {
+            $this->loadThis();
+        }
+        else
+        {
+            $userId = ($userId == NULL ?  : $userId);
+
+            $searchText = $this->input->post('searchText');
+            $fromDate = $this->input->post('fromDate');
+            $toDate = $this->input->post('toDate');
+
+            $data['userInfo'] = $this->user_model->getUserInfoById($userId);
+
+            $data['searchText'] = $searchText;
+            $data['fromDate'] = $fromDate;
+            $data['toDate'] = $toDate;
+
+            $this->load->library('pagination');
+
+            $count = $this->user_model->loginHistoryCount($userId, $searchText, $fromDate, $toDate);
+
+            $returns = $this->paginationCompress("login-history/".$userId."/", $count, 10, 3);
+
+            $data['userRecords'] = $this->user_model->loginHistory($userId, $searchText, $fromDate, $toDate, $result["page"], $result["segment"]);
+
+            $this->global['pageTitle'] = 'User Login History';
+
+            $this->loadViews("loginHistory", $this->global, $data, NULL);
+        }
+    }
+
+    function profile($active = "details")
+    {
+        $data["userInfo"] = $this->user_model->getUserInfoWithRole($this->vendorId);
+        $data["active"] = $active;
+
+        $this->global['pageTitle'] = $active == "details" ? 'My profile' : 'Change Password';
+        $this->loadViews("profile", $this->global, $data, NULL);
+    }
 }
+?>
