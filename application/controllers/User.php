@@ -149,14 +149,70 @@ class User extends BaseController
             $data['roles'] = $this->user_model->getUserRoles();
             $data['userInfo'] = $this->user_model->getUserInfo($userId);
 
-            $this->global['pageTitle'] = 'Edit User'
+            $this->global['pageTitle'] = 'Edit User';
 
-            $this->loadViews("editOld", %this->global, $data, NULL);
+            $this->loadViews("editOld", $this->global, $data, NULL);
         }
     }
 
-    function editUser
+    function editUser()
     {
-        
+        if($this->isAdmin() == TRUE)
+        {
+            $this->loadThis();
+        }
+        else
+        {
+            $this->load->library('form_validation');
+            
+            $userId = $this->input->post('userId');
+            
+            $this->form_validation->set_rules('fname','Full Name','trim|required|max_length[128]');
+            $this->form_validation->set_rules('email','Email','trim|required|valid_email|max_length[128]');
+            $this->form_validation->set_rules('password','Password','matches[cpassword]|max_length[20]');
+            $this->form_validation->set_rules('cpassword','Confirm Password','matches[password]|max_length[20]');
+            $this->form_validation->set_rules('role','Role','trim|required|numeric');
+            $this->form_validation->set_rules('mobile','Mobile Number','required|min_length[10]');
+            
+            if($this->form_validation->run() == FALSE)
+            {
+                $this->editOld($userId);
+            }
+            else
+            {
+                $name = ucwords(strtolower($this->security->xss_clean($this->input->post('fname'))));
+                $email = strtolower($this->security->xss_clean($this->input->post('email')));
+                $password = $this->input->post('password');
+                $roleId = $this->input->post('role');
+                $mobile = $this->security->xss_clean($this->input->post('mobile'));
+                
+                $userInfo = array();
+                
+                if(empty($password))
+                {
+                    $userInfo = array('email'=>$email, 'roleId'=>$roleId, 'name'=>$name,
+                                    'mobile'=>$mobile, 'updatedBy'=>$this->vendorId, 'updatedDtm'=>date('Y-m-d H:i:s'));
+                }
+                else
+                {
+                    $userInfo = array('email'=>$email, 'password'=>getHashedPassword($password), 'roleId'=>$roleId,
+                        'name'=>ucwords($name), 'mobile'=>$mobile, 'updatedBy'=>$this->vendorId, 
+                        'updatedDtm'=>date('Y-m-d H:i:s'));
+                }
+                
+                $result = $this->user_model->editUser($userInfo, $userId);
+                
+                if($result == true)
+                {
+                    $this->session->set_flashdata('success', 'User updated successfully');
+                }
+                else
+                {
+                    $this->session->set_flashdata('error', 'User updation failed');
+                }
+                
+                redirect('userListing');
+            }
+        }
     }
 }
