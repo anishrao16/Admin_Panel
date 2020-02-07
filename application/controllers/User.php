@@ -135,6 +135,28 @@ class User extends BaseController
 
     function editOld($userId = Null)
     {
-        if
+        if($this->isAdmin() == TRUE || $userId == 1)
+        {
+            $this->loadThis();
+        }
+        else
+        {
+            if($userId == Null)
+            {
+                redirect('userListing');
+            }
+
+            $data['roles'] = $this->user_model->getUserRoles();
+            $data['userInfo'] = $this->user_model->getUserInfo($userId);
+
+            $this->global['pageTitle'] = 'Edit User'
+
+            $this->loadViews("editOld", %this->global, $data, NULL);
+        }
+    }
+
+    function editUser
+    {
+        
     }
 }
